@@ -14,7 +14,7 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Jeff Zemerick | [jzonthemtn](https://github.com/jzonthemtn)                           | Mountain Fog |
 | Michael Froh | [msfroh](https://github.com/msfroh)                   | Uber      |
 | Scott Stults | [sstults](https://github.com/sstults)                   | OpenSource Connections      |
-
+| Martin Gaievski       | [martin-gaievski](https://github.com/martin-gaievski)         | Amazon      |
 ## Emeritus
 
 | Maintainer         | GitHub ID                                                 | Affiliation |
