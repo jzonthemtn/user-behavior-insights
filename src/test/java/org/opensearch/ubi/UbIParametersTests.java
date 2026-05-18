@@ -9,9 +9,10 @@
 package org.opensearch.ubi;
 
 import org.opensearch.action.search.SearchRequest;
-import org.opensearch.common.xcontent.XContentFactory;
+import org.opensearch.common.xcontent.json.JsonXContent;
 import org.opensearch.core.common.io.stream.StreamOutput;
 import org.opensearch.core.xcontent.XContentBuilder;
+import org.opensearch.core.xcontent.XContentParser;
 import org.opensearch.search.builder.SearchSourceBuilder;
 import org.opensearch.test.OpenSearchTestCase;
 import org.opensearch.ubi.ext.UbiParameters;
@@ -97,18 +98,24 @@ public class UbIParametersTests extends OpenSearchTestCase {
 
     public void testToXContent() throws IOException {
         final UbiParameters params = new UbiParameters("query_id", "user_query", "client_id", "app", "object_id", Collections.emptyMap());
-        XContentBuilder builder = XContentFactory.jsonBuilder();
-        builder.startObject();
-        assertNotNull(params.toXContent(builder, null));
-        builder.endObject();
+        final UbiParameters roundtripped = serializeAndParse(params);
+        assertEquals(params, roundtripped);
     }
 
     public void testToXContentAllOptionalParameters() throws IOException {
         final UbiParameters params = new UbiParameters("query_id", "user_query", "client_id", "app", "object_id", Collections.emptyMap());
-        XContentBuilder builder = XContentFactory.jsonBuilder();
+        final UbiParameters roundtripped = serializeAndParse(params);
+        assertEquals(params, roundtripped);
+    }
+
+    private UbiParameters serializeAndParse(UbiParameters params) throws IOException {
+        final XContentBuilder builder = JsonXContent.contentBuilder();
         builder.startObject();
-        assertNotNull(params.toXContent(builder, null));
+        params.toXContent(builder, null);
         builder.endObject();
+        try (XContentParser parser = createParser(JsonXContent.jsonXContent, builder.toString())) {
+            return UbiParameters.parse(parser);
+        }
     }
 
 }
